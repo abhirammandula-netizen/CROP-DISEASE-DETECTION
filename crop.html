@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-POWERDED CROP DISESE DETECTION Prototype</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="wrapper">
+        <header class="header">
+            <h1>AI Crop Disease Detection</h1>
+            <p class="subtitle">Advanced agricultural technology for precise crop health analysis and disease identification</p>
+        </header>
+
+        <div class="container">
+            <div class="status-bar">
+                System Status: Online | AI Model: Active | Last Updated: 2026
+            </div>
+
+            <main class="main-content">
+                <section class="content-section">
+                    <div class="upload-section">
+                        <h3>Image Upload</h3>
+                        <p>Select a high-quality image of your crop leaves for accurate disease detection analysis</p>
+                        <label class="file-input-wrapper">
+                            Choose Image File
+                            <input type="file" id="imageUpload" accept="image/*" onchange="previewImage()">
+                        </label>
+                    </div>
+                </section>
+
+                <section class="content-section">
+                    <div class="image-preview-section">
+                        <h3>Image Preview</h3>
+                        <img id="imagePreview" alt="Crop Image Preview">
+                        <p id="preview-text" style="text-align: center; color: var(--text-secondary); margin-top: 16px;">No image selected</p>
+                    </div>
+                </section>
+
+                <section class="analysis-section">
+                    <h3>AI Analysis</h3>
+                    <p style="text-align: center; color: var(--text-secondary); margin-bottom: 24px;">
+                        Our advanced AI system uses machine learning algorithms to analyze crop images and identify potential diseases with high accuracy.
+                    </p>
+                    <button class="detect-btn" onclick="detectDisease()">Start Analysis</button>
+                    <div id="result"></div>
+                </section>
+            </main>
+
+            <footer class="footer">
+                <p>© 2026 Agricultural AI Solutions | Powered by Advanced Machine Learning Technology</p>
+                <p>For professional agricultural consultation, contact certified crop specialists</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        function previewImage() {
+            const file = document.getElementById('imageUpload').files[0];
+            const preview = document.getElementById('imagePreview');
+            const previewText = document.getElementById('preview-text');
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    previewText.textContent = `Selected: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+                    previewText.style.color = 'var(--primary-green)';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+                previewText.textContent = 'No image selected';
+                previewText.style.color = 'var(--text-secondary)';
+            }
+        }
+
+        function detectDisease() {
+            const file = document.getElementById('imageUpload').files[0];
+            if (!file) {
+                alert('Please select an image file first to proceed with analysis.');
+                return;
+            }
+
+            const button = document.querySelector('.detect-btn');
+            const container = document.querySelector('.container');
+
+            button.classList.add('loading');
+            button.innerHTML = '<span class="loading-spinner"></span>Analyzing...';
+
+            // Add loading overlay
+            const loadingOverlay = document.createElement('div');
+            loadingOverlay.className = 'loading-overlay';
+            loadingOverlay.innerHTML = `
+                <div class="loading-spinner"></div>
+                <p>AI Analysis in Progress</p>
+                <small>Processing image with advanced algorithms...</small>
+            `;
+            container.appendChild(loadingOverlay);
+
+            // Simulate AI processing delay
+            setTimeout(() => {
+                // Mock AI detection results
+                const diseases = [
+                    { name: 'Healthy Crop', confidence: 95, description: 'No disease detected. Crop appears healthy and well-maintained.', severity: 'None', treatment: 'Continue standard agricultural practices.', medicine: 'No medicine needed — maintain proper care and monitoring.' },
+                    { name: 'Leaf Blight', confidence: 87, description: 'Fungal infection causing brown spots and lesions on leaves.', severity: 'Moderate', treatment: 'Apply copper-based fungicide immediately. Improve air circulation.', medicine: 'Recommended: Copper oxychloride or Mancozeb.' },
+                    { name: 'Powdery Mildew', confidence: 92, description: 'White powdery fungal growth on leaf surfaces.', severity: 'High', treatment: 'Use sulfur-based fungicides. Reduce humidity around plants.', medicine: 'Recommended: Sulfur spray or potassium bicarbonate.' },
+                    { name: 'Rust Disease', confidence: 78, description: 'Orange-brown pustules on leaves indicating fungal infection.', severity: 'Moderate', treatment: 'Remove infected leaves. Apply appropriate fungicide treatment.', medicine: 'Recommended: Myclobutanil or propiconazole-based fungicide.' },
+                    { name: 'Bacterial Spot', confidence: 83, description: 'Small, dark lesions caused by bacterial infection.', severity: 'Moderate', treatment: 'Use copper bactericides. Avoid overhead watering.', medicine: 'Recommended: Copper hydroxide or copper sulfate spray.' }
+                ];
+
+                const randomDisease = diseases[Math.floor(Math.random() * diseases.length)];
+
+                document.getElementById('result').innerHTML = `
+                    <h3>Analysis Results</h3>
+                    <div class="result-item">
+                        <div class="result-label">Detected Condition</div>
+                        <div class="result-value">${randomDisease.name}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Confidence Level</div>
+                        <div class="result-value">
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" style="width: ${randomDisease.confidence}%">${randomDisease.confidence}%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Severity Assessment</div>
+                        <div class="result-value">${randomDisease.severity}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Description</div>
+                        <div class="result-value">${randomDisease.description}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Recommended Treatment</div>
+                        <div class="result-value">${randomDisease.treatment}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Suggested Medicine</div>
+                        <div class="result-value">${randomDisease.medicine}</div>
+                    </div>
+                    <div class="professional-tip">
+                        <strong>Professional Recommendation:</strong> Early detection is crucial for effective treatment.
+                        Consult with certified agricultural specialists for comprehensive crop management strategies.
+                        Regular monitoring and preventive measures can significantly reduce disease incidence.
+                    </div>
+                `;
+
+                button.classList.remove('loading');
+                button.innerHTML = '<span style="margin-right: 8px;">🔄</span>Analyze Another Image';
+
+                // Remove loading overlay
+                container.removeChild(loadingOverlay);
+            }, 4000); // 4 second delay for more realistic processing time
+        }
+    </script>
+</body>
+</html>
